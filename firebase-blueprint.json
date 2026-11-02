@@ -1,0 +1,408 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role-based access information",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "User email address"
+        },
+        "name": {
+          "type": "string",
+          "description": "User display name"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["ADMIN", "BGH", "TEACHER", "GUARD"],
+          "description": "Assigned access control role"
+        },
+        "avatarUrl": {
+          "type": "string",
+          "description": "Avatar URL"
+        },
+        "employeeId": {
+          "type": "string",
+          "description": "Linked employee identifier if applicable"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of creation"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last update"
+        }
+      },
+      "required": ["email", "name", "role", "createdAt"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Explicit admin authorization marker for security rules",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Admin email address"
+        },
+        "grantedAt": {
+          "type": "string",
+          "description": "ISO timestamp when admin role was granted"
+        },
+        "grantedBy": {
+          "type": "string",
+          "description": "Email or UID of granting administrator"
+        }
+      },
+      "required": ["email", "grantedAt"]
+    },
+    "Employee": {
+      "title": "Employee",
+      "description": "School staff member available for duty assignments",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Employee code (e.g. GV01, BGH01, BV01)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of staff member"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["TEACHER", "ADMIN", "GUARD"],
+          "description": "Professional position in school"
+        },
+        "department": {
+          "type": "string",
+          "description": "Department or subject group"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Contact phone number"
+        },
+        "email": {
+          "type": "string",
+          "description": "Contact email address"
+        },
+        "isActive": {
+          "type": "boolean",
+          "description": "Active status for scheduling"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional notes or conditions"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last update"
+        }
+      },
+      "required": ["code", "name", "role", "department", "phone", "email", "isActive"]
+    },
+    "Shift": {
+      "title": "Shift",
+      "description": "24-hour boarding school duty shift assignment",
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "description": "Date of shift (YYYY-MM-DD)"
+        },
+        "dayOfWeek": {
+          "type": "number",
+          "description": "Day of week (0: Sunday, 1: Monday...)"
+        },
+        "startTime": {
+          "type": "string",
+          "description": "Shift start time (e.g. 07:00)"
+        },
+        "endTime": {
+          "type": "string",
+          "description": "Shift end time"
+        },
+        "teacher1Id": {
+          "type": "string",
+          "description": "ID of Teacher 1"
+        },
+        "teacher2Id": {
+          "type": "string",
+          "description": "ID of Teacher 2"
+        },
+        "adminId": {
+          "type": "string",
+          "description": "ID of Administrator/Principal on duty"
+        },
+        "guardId": {
+          "type": "string",
+          "description": "ID of Guard on duty"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["COMPLETE", "INCOMPLETE", "CONFLICT"],
+          "description": "Shift completion or conflict status"
+        },
+        "isLocked": {
+          "type": "boolean",
+          "description": "Whether shift is locked against routine edits"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Duty notes or instructions"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last modification"
+        },
+        "updatedBy": {
+          "type": "string",
+          "description": "UID or email of modifier"
+        }
+      },
+      "required": ["date", "dayOfWeek", "startTime", "endTime", "status", "isLocked"]
+    },
+    "ShiftChangeRequest": {
+      "title": "ShiftChangeRequest",
+      "description": "Peer-to-peer shift swap or coverage proposal",
+      "type": "object",
+      "properties": {
+        "requesterId": {
+          "type": "string",
+          "description": "Employee ID requesting the swap"
+        },
+        "targetEmployeeId": {
+          "type": "string",
+          "description": "Target employee proposed for the swap"
+        },
+        "requesterShiftId": {
+          "type": "string",
+          "description": "Original shift ID belonging to requester"
+        },
+        "targetShiftId": {
+          "type": "string",
+          "description": "Target shift ID belonging to target employee"
+        },
+        "requesterRolePosition": {
+          "type": "string",
+          "enum": ["teacher1", "teacher2", "admin", "guard"],
+          "description": "Position role in requester's shift"
+        },
+        "targetRolePosition": {
+          "type": "string",
+          "enum": ["teacher1", "teacher2", "admin", "guard"],
+          "description": "Position role in target employee's shift"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Reason for the swap"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["PENDING", "APPROVED", "REJECTED", "CANCELLED"],
+          "description": "Current status of swap request"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp when request was submitted"
+        },
+        "resolvedAt": {
+          "type": "string",
+          "description": "ISO timestamp when resolved"
+        }
+      },
+      "required": ["requesterId", "targetEmployeeId", "requesterShiftId", "targetShiftId", "reason", "status", "createdAt"]
+    },
+    "ShiftChangeHistory": {
+      "title": "ShiftChangeHistory",
+      "description": "Immutable audit record of shift personnel changes",
+      "type": "object",
+      "properties": {
+        "shiftDate": {
+          "type": "string",
+          "description": "Date of the shift modified"
+        },
+        "rolePosition": {
+          "type": "string",
+          "enum": ["teacher1", "teacher2", "admin", "guard"],
+          "description": "Duty position adjusted"
+        },
+        "previousEmployeeId": {
+          "type": "string",
+          "description": "Previous assigned employee ID"
+        },
+        "newEmployeeId": {
+          "type": "string",
+          "description": "New assigned employee ID"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Adjustment or swap reason"
+        },
+        "changedBy": {
+          "type": "string",
+          "description": "User who initiated or confirmed the change"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "ISO timestamp of the change"
+        }
+      },
+      "required": ["shiftDate", "rolePosition", "newEmployeeId", "reason", "changedBy", "timestamp"]
+    },
+    "UnavailableDate": {
+      "title": "UnavailableDate",
+      "description": "Staff leave or scheduled unavailability request",
+      "type": "object",
+      "properties": {
+        "employeeId": {
+          "type": "string",
+          "description": "Employee requesting leave"
+        },
+        "date": {
+          "type": "string",
+          "description": "Date of requested unavailability (YYYY-MM-DD)"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Reason for unavailability"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["PENDING", "APPROVED", "REJECTED"],
+          "description": "Approval status"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of submission"
+        }
+      },
+      "required": ["employeeId", "date", "reason", "status", "createdAt"]
+    },
+    "CompensatoryDuty": {
+      "title": "CompensatoryDuty",
+      "description": "Compensatory duty debt and fulfillment tracking",
+      "type": "object",
+      "properties": {
+        "debtorEmployeeId": {
+          "type": "string",
+          "description": "Employee who owes compensatory duty"
+        },
+        "creditorEmployeeId": {
+          "type": "string",
+          "description": "Colleague who covered the shift"
+        },
+        "originalShiftDate": {
+          "type": "string",
+          "description": "Original missed shift date"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Originating cause"
+        },
+        "sourceType": {
+          "type": "string",
+          "enum": ["LEAVE_APPROVAL", "SHIFT_SWAP", "MANUAL_DEBT"],
+          "description": "Source mechanism"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["PENDING", "SCHEDULED", "COMPLETED"],
+          "description": "Fulfillment status"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of creation"
+        },
+        "compensatedShiftDate": {
+          "type": "string",
+          "description": "Date when duty was compensated"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Notes"
+        }
+      },
+      "required": ["debtorEmployeeId", "originalShiftDate", "reason", "sourceType", "status", "createdAt"]
+    },
+    "ScheduleSetting": {
+      "title": "ScheduleSetting",
+      "description": "School operational settings for duty scheduling",
+      "type": "object",
+      "properties": {
+        "schoolName": {
+          "type": "string",
+          "description": "School name"
+        },
+        "shiftDurationHours": {
+          "type": "number",
+          "description": "Duration of shift in hours"
+        },
+        "shiftStartTime": {
+          "type": "string",
+          "description": "Daily shift start time"
+        },
+        "shiftEndTime": {
+          "type": "string",
+          "description": "Daily shift end time"
+        },
+        "requiredTeachers": {
+          "type": "number",
+          "description": "Teachers required per shift (usually 2)"
+        },
+        "requiredAdmins": {
+          "type": "number",
+          "description": "Administrators required per shift (1)"
+        },
+        "requiredGuards": {
+          "type": "number",
+          "description": "Guards required per shift (1)"
+        },
+        "fairDistribution": {
+          "type": "boolean",
+          "description": "Balance weekend and weekday distribution"
+        }
+      },
+      "required": ["schoolName", "shiftDurationHours", "shiftStartTime", "shiftEndTime", "requiredTeachers", "requiredAdmins", "requiredGuards"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and RBAC assignment"
+    },
+    "/admins/{userId}": {
+      "schema": "Admin",
+      "description": "Privileged administrator identity records"
+    },
+    "/employees/{employeeId}": {
+      "schema": "Employee",
+      "description": "List of school employees"
+    },
+    "/shifts/{shiftId}": {
+      "schema": "Shift",
+      "description": "24h duty shift records"
+    },
+    "/shift_change_requests/{requestId}": {
+      "schema": "ShiftChangeRequest",
+      "description": "Peer shift swap proposals"
+    },
+    "/shift_change_history/{historyId}": {
+      "schema": "ShiftChangeHistory",
+      "description": "Immutable shift change audit log"
+    },
+    "/unavailable_dates/{id}": {
+      "schema": "UnavailableDate",
+      "description": "Employee leave and unavailability requests"
+    },
+    "/compensatory_duties/{id}": {
+      "schema": "CompensatoryDuty",
+      "description": "Compensatory duty records"
+    },
+    "/schedule_settings/{id}": {
+      "schema": "ScheduleSetting",
+      "description": "System-wide scheduling configuration"
+    }
+  }
+}

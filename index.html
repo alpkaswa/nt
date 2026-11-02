@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // Safe polyfill/accessor for window.fetch to prevent errors from Chrome extension interceptors
+      (function() {
+        try {
+          var originalFetch = window.fetch;
+          Object.defineProperty(window, 'fetch', {
+            configurable: true,
+            enumerable: true,
+            get: function() {
+              return originalFetch;
+            },
+            set: function(newFetch) {
+              originalFetch = newFetch;
+            }
+          });
+        } catch (e) {
+          try {
+            var proto = Object.getPrototypeOf(window);
+            if (proto) {
+              var origProtoFetch = window.fetch;
+              Object.defineProperty(proto, 'fetch', {
+                configurable: true,
+                enumerable: true,
+                get: function() {
+                  return origProtoFetch;
+                },
+                set: function(newFetch) {
+                  origProtoFetch = newFetch;
+                }
+              });
+            }
+          } catch (e2) {}
+        }
+      })();
+    </script>
+    <title>TRƯỜNG PTDTNT NA RÌ - Quản Lý & Sắp Xếp Lịch Trực Quản Sinh Nội Trú</title>
+    <meta name="description" content="Phần mềm quản lý và sắp xếp lịch trực quản sinh tự động Trường Phổ Thông Dân Tộc Nội Trú Na Rì, kiểm soát ràng buộc 24 giờ, chống trùng ca và thống kê minh bạch." />
+    <meta property="og:title" content="TRƯỜNG PTDTNT NA RÌ - Quản Lý & Sắp Xếp Lịch Trực Quản Sinh Nội Trú" />
+    <meta property="og:description" content="Phần mềm quản lý và sắp xếp lịch trực quản sinh tự động Trường Phổ Thông Dân Tộc Nội Trú Na Rì, kiểm soát ràng buộc 24 giờ, chống trùng ca và thống kê minh bạch." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

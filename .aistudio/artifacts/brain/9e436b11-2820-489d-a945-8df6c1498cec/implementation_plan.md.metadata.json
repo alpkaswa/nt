@@ -1,0 +1,6 @@
+{
+  "summary":  "Kế hoạch chi tiết nâng cấp toàn diện hệ thống Lịch Trực Quản Sinh sang Firebase (Authentication, Cloud Firestore, Realtime onSnapshot, Transaction đổi ca an toàn, Phân quyền bảo mật Firestore Rules và Bộ kiểm thử tự động).",
+  "updatedAt":  "2026-11-02T11:28:58.836691974Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}

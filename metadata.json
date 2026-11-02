@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Quản Lý \u0026 Sắp Xếp Lịch Trực Quản Sinh Nội Trú",
+  "description": "Phần mềm quản lý và sắp xếp lịch trực quản sinh tự động trường học nội trú, kiểm soát ràng buộc 24 giờ, chống trùng ca và thống kê minh bạch.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
